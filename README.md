@@ -1,66 +1,92 @@
 # GC-RC-RSA
-本项目主要包含图像分类模型的训练、测试以及特征提取三个主要功能，具体涵盖十折交叉验证训练、最终验证集评估、测试集评估和全切片图像（WSI）的特征提取与热力图生成。
 
-## 代码说明
+# Image Classification Model Training, Testing, and Feature Extraction
 
-### 1. 训练脚本 (`train.py`)
-#### 功能
-使用十折交叉验证训练一个图像分类模型，并在最终验证集上进行评估。
+## Overview
+This project mainly covers three core functionalities:
+- Training an image classification model with 10-fold cross-validation.
+- Evaluating the model on validation and test sets.
+- Extracting features from whole slide images (WSIs) and generating heatmaps.
 
-#### 参数配置
-- `output_dir`: 输出结果的保存路径。
-- `num_classes`: 分类的类别数量。
-- `batch_size`: 训练和验证时的批次大小。
-- `num_epochs`: 训练的轮数。
-- `lr`: 学习率。
+## Directory Structure
+```plaintext
+train.py
+test.py
+feature_extractor.py
+```
 
-#### 运行方式
+## Scripts
+
+### 1. Training Script (`train.py`)
+#### Functionality
+- Trains an image classification model using 10-fold cross-validation.
+- Evaluates performance on the final validation set.
+
+#### Parameters
+- `output_dir`: Directory to save output results.
+- `num_classes`: Number of classes.
+- `batch_size`: Batch size for training and validation.
+- `num_epochs`: Number of epochs for training.
+- `lr`: Learning rate.
+
+#### Usage
 ```bash
 python train.py
 ```
 
-### 2. 测试脚本 (`test.py`)
-#### 功能
-加载训练好的模型，并在测试集上进行评估，保存测试结果。
+---
 
-#### 参数配置
-- `output_dir`: 输出结果的保存路径。
-- `model_path`: 训练好的模型的保存路径。
-- `data_path`: 测试数据的路径。
-- `num_classes`: 分类的类别数量。
-- `batch_size`: 测试时的批次大小。
+### 2. Testing Script (`test.py`)
+#### Functionality
+- Loads a trained model and evaluates it on the test dataset.
+- Saves the test evaluation results.
 
-#### 运行方式
+#### Parameters
+- `output_dir`: Directory to save output results.
+- `model_path`: Path to the saved trained model.
+- `data_path`: Path to the test dataset.
+- `num_classes`: Number of classes.
+- `batch_size`: Batch size for testing.
+
+#### Usage
 ```bash
 python test.py
 ```
 
-### 3. 特征提取脚本 (`feature extractor.py`)
-#### 功能
-从全切片图像（WSI）中提取特征，并生成热力图。
+---
 
-#### 参数配置
-- `WSI_FOLDER`: 全切片图像的文件夹路径。
-- `weights_path`: 预训练模型的权重路径。
-- `PATCH_SIZE`: 图像块的大小。
-- `LEVEL`: 切片的级别。
-- `STRIDE`: 滑动窗口的步长。
-- `MODEL_TYPE`: 特征提取模型的类型。
-- `feature_num`: 提取的特征数量。
+### 3. Feature Extraction Script (`feature_extractor.py`)
+#### Functionality
+- Extracts features from WSIs.
+- Generates heatmaps for visualization.
 
-#### 运行方式
+#### Parameters
+- `WSI_FOLDER`: Path to the folder containing WSIs.
+- `weights_path`: Path to the pretrained model weights.
+- `PATCH_SIZE`: Size of image patches to be extracted.
+- `LEVEL`: Magnification level to extract patches from.
+- `STRIDE`: Sliding window stride for patch extraction.
+- `MODEL_TYPE`: Type of model used for feature extraction.
+- `feature_num`: Number of features to extract per patch.
+
+#### Usage
 ```bash
-python feature extractor.py
+python feature_extractor.py
 ```
 
-## 结果保存
-- **训练结果**: 训练过程中的损失、准确率、AUC 等指标会保存为 `unipath_training_results_cv.csv`。
-- **测试结果**: 测试集上的准确率、AUC、敏感度和特异度会保存为 `unipath_test_results.csv`。
-- **特征提取结果**: 每个 WSI 的特征平均值会保存为 `wsi_feature_summary.csv`，同时每个 WSI 的热力图会保存为 `{slide_name}_heatmap.jpg`。
+---
 
-## 注意事项
-- 请确保数据路径和模型权重路径正确，否则会导致程序运行出错。
-- 在运行脚本之前，请检查是否已经安装了所有必要的依赖库。
-```
+## Output Files
 
+- **Training Results**:  
+  Saved as `unipath_training_results_cv.csv`, containing training metrics like loss, accuracy, and AUC across cross-validation folds.
+
+- **Testing Results**:  
+  Saved as `unipath_test_results.csv`, including metrics such as accuracy, AUC, sensitivity, and specificity on the test set.
+
+- **Feature Extraction Results**:  
+  - Summary features for each WSI saved as `wsi_feature_summary.csv`.
+  - Heatmap images saved as `{slide_name}_heatmap.jpg`.
+
+---
 
